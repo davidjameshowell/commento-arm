@@ -32,7 +32,7 @@ jobs:
         run: |
           mkdir -p ./commento/resources
           cp ./resources/docker-entrypoint.sh ./commento/resources/docker-entrypoint.sh
-          cat ./resources/docker-entrypoint.sh
+          cat ./commento/resources/docker-entrypoint.sh
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
