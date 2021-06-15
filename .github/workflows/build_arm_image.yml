@@ -31,7 +31,8 @@ jobs:
         id: copy_resources
         run: |
           mkdir -p commento/resources
-          cp resources/* commento/resources/*
+          cp -R resources commento/resources
+          cd commento/resources && ls
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
