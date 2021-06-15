@@ -30,9 +30,9 @@ jobs:
       - name: Copy resources into build folder
         id: copy_resources
         run: |
-          mkdir -p commento/resources
-          cp -R resources commento/resources
-          cd commento/resources && ls
+          mkdir -p ./commento/resources
+          cp -R ./resources ./commento/resources
+          ls ./commento/resources
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
