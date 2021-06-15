@@ -15,11 +15,6 @@ jobs:
     name: Build multi-arch Docker image.
     runs-on: ubuntu-latest
     steps:
-      - name: Setup tmate session
-        id: tmate_debug
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
-
       - name: Checkout builder repo
         uses: actions/checkout@v2
 
@@ -34,7 +29,7 @@ jobs:
           sed -i 's/node:12-alpine/node:14-alpine3.12/g' commento/Dockerfile
           sed -i 's/ca-certificates/ca-certificates wget libc6-compat/g' commento/Dockerfile
           sed -i 's/EXPOSE 8080/EXPOSE 8080\nCOPY .\/resources\/ \//g' commento/Dockerfile
-          sed -i 's/\/commento\/commento/\/docker-entrypoint.sh/g' commento/Dockerfile
+          sed -i 's/"\/commento\/commento"/"\/docker-entrypoint.sh"/g' commento/Dockerfile
 
       - name: Copy resources into build folder
         id: copy_resources
@@ -42,12 +37,6 @@ jobs:
           mkdir -p ./commento/resources
           cp ./resources/docker-entrypoint.sh ./commento/resources/docker-entrypoint.sh
           cat ./commento/resources/docker-entrypoint.sh
-
-      - name: Add sleep for tmate session debug 
-        id: tmate_sleep_debug
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
-        run: |
-          sleep 900 
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -63,6 +52,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Setup tmate session
+        id: tmate_debug
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
 
       - name: Build and push Commento-ARM
         id: docker_build_commento_arm
