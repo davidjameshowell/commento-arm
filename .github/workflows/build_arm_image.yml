@@ -31,7 +31,7 @@ jobs:
         id: copy_resources
         run: |
           mkdir -p ./commento/resources
-          cp -R ./resources ./commento/resources
+          cp ./resources/docker-entrypoint.sh ./commento/resources/docker-entrypoint.sh
           ls ./commento/resources
 
       - name: Set up QEMU
