@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Clone Commento repo
-        id: copy_resources
+        id: clone_commento
         run: |
           git clone https://gitlab.com/commento/commento.git
 
