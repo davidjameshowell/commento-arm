@@ -24,7 +24,7 @@ jobs:
         run: |
           sed -i 's/node:12-alpine/node:14-alpine3.12/g' commento/Dockerfile
           sed -i 's/ca-certificates/ca-certificates wget libc6-compat/g' commento/Dockerfile
-          sed -i 's/ARG RELEASE=prod/ARG RELEASE=prod\nCOPY .\/resources\/ \//g' commento/Dockerfile
+          sed -i 's/EXPOSE 8080/EXPOSE 8080\nCOPY .\/resources\/ \//g' commento/Dockerfile
           sed -i 's/\/commento\/commento/\/docker-entrypoint.sh/g' commento/Dockerfile
 
       - name: Copy resources into build folder
