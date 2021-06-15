@@ -14,14 +14,10 @@ jobs:
       - name: Checkout builder repo
         uses: actions/checkout@v2
 
-      - uses: actions/checkout@v2
-        env:
-          GITHUB_SERVER_URL: https://gitlab.com
-        with:
-          repository: 'commento/commento'
-          ref: 'master'
-          # Relative path under $GITHUB_WORKSPACE to place the repository
-          fetch-depth: '1'
+      - name: Clone Commento repo
+        id: copy_resources
+        run: |
+          git clone https://gitlab.com/commento/commento.git
 
       - name: Change Dockerfile to use specific Node version for ARM compatability
         id: sed_dockerfile
