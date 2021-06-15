@@ -5,12 +5,21 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+    inputs:
+      debug_enabled:
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'     
+        required: false
+        default: false
 jobs:
   build_multi_arch_image:
     name: Build multi-arch Docker image.
     runs-on: ubuntu-latest
     steps:
+      - name: Setup tmate session
+        id: tmate_debug
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
+
       - name: Checkout builder repo
         uses: actions/checkout@v2
 
@@ -33,6 +42,12 @@ jobs:
           mkdir -p ./commento/resources
           cp ./resources/docker-entrypoint.sh ./commento/resources/docker-entrypoint.sh
           cat ./commento/resources/docker-entrypoint.sh
+
+      - name: Add sleep for tmate session debug 
+        id: tmate_sleep_debug
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
+        run: |
+          sleep 900 
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
